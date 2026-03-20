@@ -2,9 +2,9 @@ import os
 from huggingface_hub import hf_hub_download
 from llama_cpp import Llama
 
-# Heavily quantized, ultra-fast generic GGUF version of Phi-3 Mini
-REPO_ID = "microsoft/Phi-3-mini-4k-instruct-gguf"
-FILENAME = "Phi-3-mini-4k-instruct-q4.gguf" # We use Q4 for optimized memory and speed
+# Ultra-fast, highly obedient Llama-3.2 1B Instruct model (Only ~800MB)
+REPO_ID = "bartowski/Llama-3.2-1B-Instruct-GGUF"
+FILENAME = "Llama-3.2-1B-Instruct-Q4_K_M.gguf"
 
 llm = None
 
@@ -18,28 +18,28 @@ def load_model():
     model_path = hf_hub_download(repo_id=REPO_ID, filename=FILENAME)
 
     # Step 2: Load the model into memory
-    # Temporarily disabling GPU (n_gpu_layers=0) to test if the Metal Framework is causing the segfault
-    print(f"Loading model into memory (CPU Only Mode)...")
+    print(f"Loading model into memory (GPU Apple Metal Mode)...")
     llm = Llama(
         model_path=model_path,
-        n_gpu_layers=0, # Fallback to CPU to bypass Apple Metal GPU bugs
+        n_gpu_layers=-1, # Hardware acceleration re-enabled!
         n_ctx=4096, # 4K Context Window for Phi-3
         verbose=False # Keep terminal clean
     )
-    print("Optimization complete. Model loaded for CPU inference.")
+    print("Optimization complete. Model is loaded with blazing fast Metal backend.")
 
-def generate_stream(prompt: str):
+def generate_stream(messages: list):
     if llm is None:
         load_model()
     
-    # Yield tokens one by one as they generate
-    stream = llm.create_completion(
-        prompt, 
+    # Use native Chat Completion to automatically handle proper token stops based on the model!
+    stream = llm.create_chat_completion(
+        messages=messages, 
         max_tokens=612, 
         temperature=0.7, 
         top_p=0.9,
         stream=True
     )
     
-    for output in stream:
-        yield output['choices'][0]['text']
+    for chunk in stream:
+        if 'delta' in chunk['choices'][0] and 'content' in chunk['choices'][0]['delta']:
+            yield chunk['choices'][0]['delta']['content']

@@ -36,9 +36,13 @@ def improve_text_stream(text: str, mode: str):
     # Advanced AI generation for Formal/Casual/Rewrite
     system_prompt = get_system_prompt(mode)
     
-    # Construct instruction prompt for Phi-3
-    prompt = f"<|system|>\n{system_prompt}<|end|>\n<|user|>\n{text}<|end|>\n<|assistant|>\n"
+    # Construct instruction prompt for Llama 3.2 Chat
+    # Instructing small models requires extreme structural isolation.
+    messages = [
+        {"role": "system", "content": f"{system_prompt}\nCRITICAL: DO NOT act like a chatbot. DO NOT answer or sympathize. ONLY output the rewritten text."},
+        {"role": "user", "content": f"Please rewrite the following text according to the system instructions. Output ONLY the rewritten text and nothing else.\n\nTEXT TO REWRITE:\n{text}"}
+    ]
     
     # Stream the generator back chunks
-    for token in generate_stream(prompt):
+    for token in generate_stream(messages):
         yield token
