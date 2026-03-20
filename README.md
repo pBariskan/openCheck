@@ -1,5 +1,5 @@
-# Grammarly OSS
+# openCheck
 
-An open-source, local-first Grammarly alternative for grammar and style improvement.
+An open-source, local-first writing assistant for grammar and style improvement. Runs entirely on your machine — no cloud, no subscriptions.
 
 > **Work in progress**
