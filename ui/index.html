@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammarly OSS</title>
+    <meta name="description" content="Local, offline, open-source grammar and style improvement tool.">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-elements">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <main class="app-container">
+        <header>
+            <h1>Grammarly <span>OSS</span></h1>
+            <p>Your local-first, blazing fast writing assistant.</p>
+        </header>
+
+        <section class="workspace">
+            <div class="input-panel glass-panel">
+                <div class="panel-header">
+                    <h2>Input Text</h2>
+                    <div class="action-buttons" id="mode-selector">
+                        <button class="mode-btn active" data-mode="grammar">Grammar</button>
+                        <button class="mode-btn" data-mode="formal">Formal</button>
+                        <button class="mode-btn" data-mode="casual">Casual</button>
+                        <button class="mode-btn" data-mode="rewrite">Rewrite</button>
+                    </div>
+                </div>
+                <textarea id="text-input" placeholder="Type or paste the text you want to improve..." autofocus></textarea>
+                <div class="panel-footer">
+                    <button id="improve-btn" class="primary-btn">
+                        <span id="btn-text">Improve Text</span>
+                        <div class="spinner hidden" id="loading-spinner"></div>
+                    </button>
+                </div>
+            </div>
+
+            <div class="output-panel glass-panel">
+                <div class="panel-header">
+                    <h2>Suggestions</h2>
+                    <span id="output-mode-badge" class="badge">grammar</span>
+                </div>
+                <div id="suggestions-container" class="suggestions-container">
+                    <div class="empty-state">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 20h9"></path>
+                            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                        </svg>
+                        <p>Your polished variations will appear here.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

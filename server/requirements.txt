@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+pydantic
+llama-cpp-python
+language_tool_python
+huggingface-hub
